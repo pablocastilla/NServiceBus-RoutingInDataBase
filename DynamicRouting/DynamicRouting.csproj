@@ -45,8 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\RoutingInfoRepository.cs" />
-    <Compile Include="DataAccess\RoutingInfo.cs" />
+    <Compile Include="DataAccess\RoutingConfigurationRepository.cs" />
+    <Compile Include="DataAccess\RoutingConfiguration.cs" />
     <Compile Include="DynamicRoutingBehaviour.cs" />
     <Compile Include="DynamicRoutingConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

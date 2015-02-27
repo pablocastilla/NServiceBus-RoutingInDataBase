@@ -19,7 +19,7 @@ namespace DynamicRouting
             {
                 var endpointMappint = new MessageEndpointMappingCollection();
 
-                IRoutingInfoRepository rep = new RoutingInfoRepository();
+                IRoutingConfigurationRepository rep = new RoutingConfigurationRepository();
 
                 var routingInfo = rep.GetRoutingInfo();
                 var messagesAlreadyInConfiguration = new List<string>();
@@ -34,7 +34,7 @@ namespace DynamicRouting
                     
                     endpointMappint.Add(new MessageEndpointMapping() 
                                         {
-                                            AssemblyName=ep.Assembly,
+                                            AssemblyName=ep.MessageAssembly,
                                             TypeFullName=ep.MessageType,
                                             Endpoint = ep.DestinationEndpoint+"@"+ep.DestinationMachine
                                         });

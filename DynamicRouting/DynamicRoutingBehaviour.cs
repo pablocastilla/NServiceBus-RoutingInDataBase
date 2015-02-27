@@ -16,16 +16,16 @@ namespace DynamicRouting
 
         public void Invoke(OutgoingContext context, Action next)
         {
-            IRoutingInfoRepository rep = new RoutingInfoRepository();
+            IRoutingConfigurationRepository rep = new RoutingConfigurationRepository();
 
             var routingInfo = rep.GetRoutingInfo();
 
             var possibleEndpoints = routingInfo.Where(r => 
                                     r.MessageType == context.OutgoingLogicalMessage.MessageType.ToString()
-                                    && r.Assembly == context.OutgoingLogicalMessage.MessageType.Assembly.GetName().Name
+                                    && r.MessageAssembly == context.OutgoingLogicalMessage.MessageType.Assembly.GetName().Name
                                     ).ToList();
 
-            RoutingInfo finalEndpoint = null;
+            RoutingConfiguration finalEndpoint = null;
 
             if (possibleEndpoints.Count() > 1)
             {
@@ -41,7 +41,7 @@ namespace DynamicRouting
 
             if (possibleEndpoints.Count() == 0)
             {
-                throw new Exception("OOOOOOOOOOOPS, NO ENDPOINT FOUND");
+                throw new Exception("NO ENDPOINT FOUND FOR " + context.OutgoingLogicalMessage.MessageType.ToString());
             }
 
             ((NServiceBus.Unicast.SendOptions)(context.DeliveryOptions)).Destination = new Address(finalEndpoint.DestinationEndpoint, finalEndpoint.DestinationMachine);
