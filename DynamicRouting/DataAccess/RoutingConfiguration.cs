@@ -26,7 +26,7 @@ namespace DynamicRouting.DataAccess
         /// <summary>
         /// Name of the component that sends
         /// </summary>
-        public string SourceComponent { get; set; }
+        public string SourceEndpoint { get; set; }
 
         /// <summary>
         /// Destination machine

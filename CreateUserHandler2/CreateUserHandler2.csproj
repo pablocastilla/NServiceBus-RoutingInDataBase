@@ -47,9 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CreateUserHandler\CreateUserHandler.cs">
-      <Link>CreateUserHandler.cs</Link>
-    </Compile>
+    <Compile Include="CreateUserHandler.cs" />
     <Compile Include="EndpointConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

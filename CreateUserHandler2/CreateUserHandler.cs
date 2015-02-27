@@ -13,7 +13,7 @@ namespace CreateUserHandler
         public IBus Bus { get; set; }
         public void Handle(CreateUser message)
         {
-            Console.WriteLine("Message recieved in CreateUserHandler");
+            Console.WriteLine("Message recieved in CreateUserHandler2");
            // Bus.Send(message);
         }
     }

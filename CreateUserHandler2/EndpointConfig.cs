@@ -14,7 +14,7 @@ namespace CreateUserHandler2
         {
 
             configuration.UsePersistence<InMemoryPersistence>();
-            configuration.Pipeline.Register<DynamicRouting.DynamicRoutingBehaviour.DynamicRoutingStepInPipeline>();
+            configuration.Pipeline.Register<DynamicRouting.DynamicRoutingStepInPipeline>();
             configuration.CustomConfigurationSource(new DynamicRoutingConfiguration());
 
         }
