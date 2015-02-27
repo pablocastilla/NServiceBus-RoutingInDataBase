@@ -49,6 +49,7 @@
     <Compile Include="DataAccess\RoutingConfiguration.cs" />
     <Compile Include="DynamicRoutingBehaviour.cs" />
     <Compile Include="DynamicRoutingConfiguration.cs" />
+    <Compile Include="DynamicRoutingSubscriptionStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

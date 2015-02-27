@@ -14,6 +14,8 @@ namespace CreateUserHandler
         public void Handle(CreateUser message)
         {
             Console.WriteLine("Message recieved in CreateUserHandler");
+
+            Bus.Publish(new UserCreated());
            // Bus.Send(message);
         }
     }

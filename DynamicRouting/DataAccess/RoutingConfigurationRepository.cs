@@ -20,7 +20,7 @@ namespace DynamicRouting.DataAccess
 
             routingInfoList.Add(new RoutingConfiguration() { MessageAssembly = "Messages", MessageType = "Messages.CreateUser", DestinationEndpoint = "CreateUserHandler", DestinationMachine = "localhost" });
             routingInfoList.Add(new RoutingConfiguration() { MessageAssembly = "Messages", MessageType = "Messages.CreateUser", DestinationEndpoint = "CreateUserHandler2", DestinationMachine = "localhost" });
-
+            
             return routingInfoList;
         }
     }

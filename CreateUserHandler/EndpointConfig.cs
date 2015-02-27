@@ -14,6 +14,7 @@ namespace CreateUserHandler
         {
 
             configuration.UsePersistence<InMemoryPersistence>();
+            configuration.ScaleOut().UseSingleBrokerQueue();
             configuration.Pipeline.Register<DynamicRouting.DynamicRoutingStepInPipeline>();
             configuration.CustomConfigurationSource(new DynamicRoutingConfiguration());
 

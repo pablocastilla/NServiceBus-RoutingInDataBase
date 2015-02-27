@@ -1,11 +1,8 @@
 
-namespace CreateUserHandler2
+namespace UserCreatedHandler
 {
     using DynamicRouting;
     using NServiceBus;
-    using NServiceBus.Features;
-    using NServiceBus.Persistence;
-    using NServiceBus.Transports;
 
     /*
 		This class configures this endpoint as a Server. More information about how to configure the NServiceBus host
@@ -15,13 +12,10 @@ namespace CreateUserHandler2
     {
         public void Customize(BusConfiguration configuration)
         {
-
             configuration.UsePersistence<InMemoryPersistence>();
-
-           
+            
             configuration.Pipeline.Register<DynamicRouting.DynamicRoutingStepInPipeline>();
             configuration.CustomConfigurationSource(new DynamicRoutingConfiguration());
-
         }
     }
 }
