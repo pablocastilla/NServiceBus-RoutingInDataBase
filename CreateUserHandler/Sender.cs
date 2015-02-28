@@ -20,7 +20,7 @@ namespace CreateUserHandler
 
         private void RunSamples()
         {
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 100; i++)
             {
                 Bus.Send(new CreateUser
                 {

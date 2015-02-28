@@ -10,9 +10,13 @@ namespace UserCreatedHandler
 {
     public class UserCreatedHandler : IHandleMessages<UserCreated>
     {
+        public static int i = 1;
+
         public void Handle(UserCreated message)
         {
-           
+            Console.WriteLine("UserCreated received in UserCreatedHandler "+i);
+
+            i++;
         }
     }
 }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NServiceBus;
+using NServiceBus.Features;
+using NServiceBus.Persistence;
 using NServiceBus.Unicast.Subscriptions.MessageDrivenSubscriptions;
 
 namespace DynamicRouting
@@ -11,12 +14,18 @@ namespace DynamicRouting
     {
         public IEnumerable<NServiceBus.Address> GetSubscriberAddressesForMessage(IEnumerable<NServiceBus.Unicast.Subscriptions.MessageType> messageTypes)
         {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
+
+            var addresses = new List<Address>();
+
+            addresses.Add(new Address("UserCreatedHandler", "localhost"));
+            
+            return addresses;
         }
 
         public void Init()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void Subscribe(NServiceBus.Address client, IEnumerable<NServiceBus.Unicast.Subscriptions.MessageType> messageTypes)
@@ -27,6 +36,23 @@ namespace DynamicRouting
         public void Unsubscribe(NServiceBus.Address client, IEnumerable<NServiceBus.Unicast.Subscriptions.MessageType> messageTypes)
         {
             throw new NotImplementedException();
+        }
+    }
+
+    public class HardCodedPersistence : PersistenceDefinition
+    {
+        public HardCodedPersistence()
+        {
+            Supports<StorageType.Subscriptions>(s => s.EnableFeatureByDefault<HardCodedPersistenceFeature>());
+            Supports<StorageType.Timeouts>(s => s.EnableFeatureByDefault<InMemoryTimeoutPersistence>());
+        }
+    }
+
+    public class HardCodedPersistenceFeature : Feature
+    {
+        protected override void Setup(FeatureConfigurationContext context)
+        {
+            context.Container.ConfigureComponent<DynamicRoutingSubscriptionStorage>(DependencyLifecycle.SingleInstance);
         }
     }
 }

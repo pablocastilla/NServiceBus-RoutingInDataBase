@@ -7,6 +7,7 @@ using DynamicRouting.DataAccess;
 using NServiceBus;
 using NServiceBus.Pipeline;
 using NServiceBus.Pipeline.Contexts;
+using NServiceBus.Unicast;
 
 namespace DynamicRouting
 {
@@ -14,18 +15,32 @@ namespace DynamicRouting
     {
         public IBus Bus { get; set; }
 
+        private IRoutingConfigurationRepository routingConfigurationRepository;
+
+        public DynamicRoutingBehaviour()
+        {
+            this.routingConfigurationRepository = new RoutingConfigurationRepository();
+        }
+
         public void Invoke(OutgoingContext context, Action next)
         {
-            IRoutingConfigurationRepository rep = new RoutingConfigurationRepository();
+            if (context.DeliveryOptions is PublishOptions)
+            {
+                next();
 
-            var routingInfo = rep.GetRoutingInfo();
+                return;
+
+            }
+
+
+            var routingInfo = routingConfigurationRepository.GetRoutingInfo();
 
             List<RoutingConfiguration> possibleEndpoints=null;
 
             //sendonly endpoint
             if (Bus==null || Bus.CurrentMessageContext == null || (Bus.CurrentMessageContext != null && Bus.CurrentMessageContext.ReplyToAddress == null))
             {
-                possibleEndpoints = FindEndpoints(routingInfo,
+                possibleEndpoints = routingConfigurationRepository.FindEndpointsBy(
                                                        context.OutgoingLogicalMessage.MessageType.ToString(),
                                                        context.OutgoingLogicalMessage.MessageType.Assembly.GetName().Name);
             }
@@ -36,9 +51,9 @@ namespace DynamicRouting
                     && Bus.CurrentMessageContext.Headers[Headers.OriginatingEndpoint]!=null)
                 {
                     //look if there is a concrete endpoint for that component
-               
 
-                    possibleEndpoints = FindEndpoints(routingInfo,                                                          
+
+                    possibleEndpoints = routingConfigurationRepository.FindEndpointsBy(                                                          
                                                          context.OutgoingLogicalMessage.MessageType.ToString(),
                                                          context.OutgoingLogicalMessage.MessageType.Assembly.GetName().Name,
                                                          Bus.CurrentMessageContext.Headers[Headers.OriginatingMachine],
@@ -47,7 +62,7 @@ namespace DynamicRouting
                     //if not look for general endpoints
                     if (possibleEndpoints == null || possibleEndpoints.Count == 0)
                     {
-                        possibleEndpoints = FindEndpoints(routingInfo,
+                        possibleEndpoints = routingConfigurationRepository.FindEndpointsBy(
                                                          context.OutgoingLogicalMessage.MessageType.ToString(),
                                                          context.OutgoingLogicalMessage.MessageType.Assembly.GetName().Name);
                       
@@ -83,24 +98,7 @@ namespace DynamicRouting
             next();
         }
 
-        private List<RoutingConfiguration> FindEndpoints(List<RoutingConfiguration> routingInfo,  string messageType, string messageAssembly, string sourceMachine=null, string sourceEndpoint=null)
-        {
-            
-            var possibleEndpoints = routingInfo.Where(r =>
-                                                
-                                                 r.MessageType == messageType
-                                                && r.MessageAssembly == messageAssembly
-                                                );
-
-            if(string.IsNullOrEmpty(sourceMachine))
-                possibleEndpoints = possibleEndpoints.Where(r=> r.SourceMachine ==sourceMachine );
-
-              if(string.IsNullOrEmpty(sourceEndpoint))
-                possibleEndpoints = possibleEndpoints.Where(r=> r.SourceEndpoint ==sourceEndpoint );
-
-
-              return possibleEndpoints.ToList();                                      
-        }
+    
 
       
     }

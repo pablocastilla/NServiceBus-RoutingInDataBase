@@ -16,9 +16,8 @@ namespace CreateUserHandler2
         public void Customize(BusConfiguration configuration)
         {
 
-            configuration.UsePersistence<InMemoryPersistence>();
-
-           
+            configuration.UsePersistence<HardCodedPersistence>();
+            configuration.DisableFeature<AutoSubscribe>();
             configuration.Pipeline.Register<DynamicRouting.DynamicRoutingStepInPipeline>();
             configuration.CustomConfigurationSource(new DynamicRoutingConfiguration());
 
