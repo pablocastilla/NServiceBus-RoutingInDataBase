@@ -39,16 +39,16 @@ namespace DynamicRouting
         }
     }
 
-    public class HardCodedPersistence : PersistenceDefinition
+    public class DynamicRoutingInMemoryPersistence : PersistenceDefinition
     {
-        public HardCodedPersistence()
+        public DynamicRoutingInMemoryPersistence()
         {
-            Supports<StorageType.Subscriptions>(s => s.EnableFeatureByDefault<HardCodedPersistenceFeature>());
+            Supports<StorageType.Subscriptions>(s => s.EnableFeatureByDefault<DynamicRoutingInMemoryPersistenceFeature>());
             Supports<StorageType.Timeouts>(s => s.EnableFeatureByDefault<InMemoryTimeoutPersistence>());
         }
     }
 
-    public class HardCodedPersistenceFeature : Feature
+    public class DynamicRoutingInMemoryPersistenceFeature : Feature
     {
         protected override void Setup(FeatureConfigurationContext context)
         {
