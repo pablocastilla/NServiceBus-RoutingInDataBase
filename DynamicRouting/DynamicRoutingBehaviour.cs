@@ -24,7 +24,17 @@ namespace DynamicRouting
 
         public void Invoke(OutgoingContext context, Action next)
         {
+            //won't process publishes
             if (context.DeliveryOptions is PublishOptions)
+            {
+                next();
+
+                return;
+
+            }
+
+            //won't process reply options
+            if (context.DeliveryOptions is ReplyOptions)
             {
                 next();
 

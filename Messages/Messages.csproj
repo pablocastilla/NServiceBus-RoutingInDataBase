@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateUser.cs" />
+    <Compile Include="NewUser.cs" />
+    <Compile Include="CreateUserResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserCreated.cs" />
   </ItemGroup>

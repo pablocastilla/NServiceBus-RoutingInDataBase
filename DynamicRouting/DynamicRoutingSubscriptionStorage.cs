@@ -45,6 +45,7 @@ namespace DynamicRouting
         {
             Supports<StorageType.Subscriptions>(s => s.EnableFeatureByDefault<DynamicRoutingInMemoryPersistenceFeature>());
             Supports<StorageType.Timeouts>(s => s.EnableFeatureByDefault<InMemoryTimeoutPersistence>());
+            Supports<StorageType.Sagas>(s => s.EnableFeatureByDefault<InMemorySagaPersistence>());
         }
     }
 
