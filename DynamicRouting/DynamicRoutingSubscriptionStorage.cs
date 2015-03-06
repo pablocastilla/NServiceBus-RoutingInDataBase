@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DynamicRouting.DataAccess;
 using NServiceBus;
 using NServiceBus.Features;
 using NServiceBus.Persistence;
@@ -14,12 +15,36 @@ namespace DynamicRouting
     {
         public IEnumerable<NServiceBus.Address> GetSubscriberAddressesForMessage(IEnumerable<NServiceBus.Unicast.Subscriptions.MessageType> messageTypes)
         {
-           // throw new NotImplementedException();
+   
 
             var addresses = new List<Address>();
+                     
 
-            addresses.Add(new Address("UserCreatedHandler", "localhost"));
-            
+            IEventSubscriptionRepository rep = new EventSubscriptionRepository();
+
+            var subs = rep.GetSubscriptionByTypes(messageTypes);
+
+
+            var results = from s in subs
+                          group s by s.SubscriberEndpoint into g
+                          select new { Endpoint = g.Key, Subscriptions = g.ToList() };
+
+            foreach (var r in results)
+            { 
+                if (r.Subscriptions.Count() > 1)
+                {
+                    Random rnd = new Random();
+                    int selected = rnd.Next(0, subs.Count());
+
+                    addresses.Add(new Address(r.Subscriptions[selected].SubscriberEndpoint,r.Subscriptions[selected].SubscriberMachine));
+                }
+                if (subs.Count() == 1)
+                {
+                    addresses.Add(new Address(r.Subscriptions[0].SubscriberEndpoint, r.Subscriptions[0].SubscriberMachine));
+                }
+            }
+
+                      
             return addresses;
         }
 

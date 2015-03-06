@@ -15,11 +15,11 @@ namespace DynamicRouting
     {
         public IBus Bus { get; set; }
 
-        private IRoutingConfigurationRepository routingConfigurationRepository;
+        private ICommandRoutingConfigurationRepository routingConfigurationRepository;
 
         public DynamicRoutingBehaviour()
         {
-            this.routingConfigurationRepository = new RoutingConfigurationRepository();
+            this.routingConfigurationRepository = new CommandRoutingConfigurationRepository();
         }
 
         public void Invoke(OutgoingContext context, Action next)
@@ -45,9 +45,9 @@ namespace DynamicRouting
 
             var routingInfo = routingConfigurationRepository.GetRoutingInfo();
 
-            List<RoutingConfiguration> possibleEndpoints=null;
+            List<CommandRoutingConfiguration> possibleEndpoints=null;
 
-            //sendonly endpoint
+            //sendonly endpoint, we don´t filter by sources
             if (Bus==null || Bus.CurrentMessageContext == null || (Bus.CurrentMessageContext != null && Bus.CurrentMessageContext.ReplyToAddress == null))
             {
                 possibleEndpoints = routingConfigurationRepository.FindEndpointsBy(
@@ -69,7 +69,7 @@ namespace DynamicRouting
                                                          Bus.CurrentMessageContext.Headers[Headers.OriginatingMachine],
                                                          Bus.CurrentMessageContext.Headers[Headers.OriginatingEndpoint]);
 
-                    //if not look for general endpoints
+                    //if not look for default endpoints
                     if (possibleEndpoints == null || possibleEndpoints.Count == 0)
                     {
                         possibleEndpoints = routingConfigurationRepository.FindEndpointsBy(
@@ -80,14 +80,14 @@ namespace DynamicRouting
                 }
             
 
-            RoutingConfiguration finalEndpoint = null;
+            CommandRoutingConfiguration finalEndpoint = null;
 
 
             if (possibleEndpoints==null || possibleEndpoints.Count() == 0)
             {
                 throw new Exception("NO ENDPOINT FOUND FOR " + context.OutgoingLogicalMessage.MessageType.ToString());
             }
-
+            //round robin with the endpoints
             if (possibleEndpoints.Count() > 1)
             {
                 Random rnd = new Random();

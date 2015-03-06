@@ -19,7 +19,7 @@ namespace DynamicRouting
             {
                 var endpointMappint = new MessageEndpointMappingCollection();
 
-                IRoutingConfigurationRepository rep = new RoutingConfigurationRepository();
+                ICommandRoutingConfigurationRepository rep = new CommandRoutingConfigurationRepository();
 
                 var routingInfo = rep.GetRoutingInfo();
                 var messagesAlreadyInConfiguration = new List<string>();

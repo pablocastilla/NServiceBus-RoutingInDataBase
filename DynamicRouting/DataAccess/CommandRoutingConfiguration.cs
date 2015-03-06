@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DynamicRouting.DataAccess
 {
-    public class RoutingConfiguration
+    public class CommandRoutingConfiguration
     {
         /// <summary>
         /// Assembly name of the message
