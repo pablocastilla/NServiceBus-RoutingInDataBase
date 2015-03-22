@@ -4,13 +4,13 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DynamicRouting.DataAccess;
+using DatabaseRouting.DataAccess;
 using NServiceBus.Config;
 using NServiceBus.Config.ConfigurationSource;
 
-namespace DynamicRouting
+namespace DatabaseRouting
 {
-    public class DynamicRoutingConfiguration : IConfigurationSource
+    public class DatabaseRoutingConfiguration : IConfigurationSource
     {
         public T GetConfiguration<T>() where T : class, new()
         {

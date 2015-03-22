@@ -1,7 +1,7 @@
 
 namespace CreateUserHandler2
 {
-    using DynamicRouting;
+    using DatabaseRouting;
     using NServiceBus;
     using NServiceBus.Features;
     using NServiceBus.Persistence;
@@ -16,10 +16,10 @@ namespace CreateUserHandler2
         public void Customize(BusConfiguration configuration)
         {
 
-            configuration.UsePersistence<DynamicRoutingInMemoryPersistence>();
+            configuration.UsePersistence<DatabaseRoutingInMemoryPersistence>();
             configuration.DisableFeature<AutoSubscribe>();
-            configuration.Pipeline.Register<DynamicRouting.DynamicRoutingStepInPipeline>();
-            configuration.CustomConfigurationSource(new DynamicRoutingConfiguration());
+            configuration.Pipeline.Register<DatabaseRouting.DatabaseRoutingStepInPipeline>();
+            configuration.CustomConfigurationSource(new DatabaseRoutingConfiguration());
 
         }
     }

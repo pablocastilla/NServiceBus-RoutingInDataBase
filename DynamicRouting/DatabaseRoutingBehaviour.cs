@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DynamicRouting.DataAccess;
+using DatabaseRouting.DataAccess;
 using NServiceBus;
 using NServiceBus.Pipeline;
 using NServiceBus.Pipeline.Contexts;
 using NServiceBus.Unicast;
 
-namespace DynamicRouting
+namespace DatabaseRouting
 {
-    public class DynamicRoutingBehaviour: IBehavior<OutgoingContext>
+    public class DatabaseRoutingBehaviour: IBehavior<OutgoingContext>
     {
         public IBus Bus { get; set; }
 
         private ICommandRoutingConfigurationRepository routingConfigurationRepository;
 
-        public DynamicRoutingBehaviour()
+        public DatabaseRoutingBehaviour()
         {
             this.routingConfigurationRepository = new CommandRoutingConfigurationRepository();
         }
@@ -87,7 +87,7 @@ namespace DynamicRouting
             {
                 throw new Exception("NO ENDPOINT FOUND FOR " + context.OutgoingLogicalMessage.MessageType.ToString());
             }
-            //round robin with the endpoints
+            //random with the endpoints
             if (possibleEndpoints.Count() > 1)
             {
                 Random rnd = new Random();
@@ -113,10 +113,10 @@ namespace DynamicRouting
       
     }
 
-    public class DynamicRoutingStepInPipeline : RegisterStep
+    public class DatabaseRoutingStepInPipeline : RegisterStep
     {
-        public DynamicRoutingStepInPipeline()
-            : base("NewStepInPipeline", typeof(DynamicRoutingBehaviour), "Looks for an endpoint in the database")
+        public DatabaseRoutingStepInPipeline()
+            : base("NewStepInPipeline", typeof(DatabaseRoutingBehaviour), "Looks for an endpoint in the database")
         {
 
             InsertBefore(WellKnownStep.DispatchMessageToTransport);

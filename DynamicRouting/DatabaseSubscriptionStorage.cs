@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DynamicRouting.DataAccess;
+using DatabaseRouting.DataAccess;
 using NServiceBus;
 using NServiceBus.Features;
 using NServiceBus.Persistence;
 using NServiceBus.Unicast.Subscriptions.MessageDrivenSubscriptions;
 
-namespace DynamicRouting
+namespace DatabaseRouting
 {
-    public class DynamicRoutingSubscriptionStorage : ISubscriptionStorage
+    public class DatabaseRoutingSubscriptionStorage : ISubscriptionStorage
     {
         public IEnumerable<NServiceBus.Address> GetSubscriberAddressesForMessage(IEnumerable<NServiceBus.Unicast.Subscriptions.MessageType> messageTypes)
         {
    
-
             var addresses = new List<Address>();
                      
 
@@ -25,6 +24,7 @@ namespace DynamicRouting
             var subs = rep.GetSubscriptionByTypes(messageTypes);
 
 
+            //if there are subscribers with the same endpoint a random is done between them. 
             var results = from s in subs
                           group s by s.SubscriberEndpoint into g
                           select new { Endpoint = g.Key, Subscriptions = g.ToList() };
@@ -50,7 +50,7 @@ namespace DynamicRouting
 
         public void Init()
         {
-            //throw new NotImplementedException();
+            
         }
 
         public void Subscribe(NServiceBus.Address client, IEnumerable<NServiceBus.Unicast.Subscriptions.MessageType> messageTypes)
@@ -64,21 +64,21 @@ namespace DynamicRouting
         }
     }
 
-    public class DynamicRoutingInMemoryPersistence : PersistenceDefinition
+    public class DatabaseRoutingInMemoryPersistence : PersistenceDefinition
     {
-        public DynamicRoutingInMemoryPersistence()
+        public DatabaseRoutingInMemoryPersistence()
         {
-            Supports<StorageType.Subscriptions>(s => s.EnableFeatureByDefault<DynamicRoutingInMemoryPersistenceFeature>());
+            Supports<StorageType.Subscriptions>(s => s.EnableFeatureByDefault<DatabaseRoutingInMemoryPersistenceFeature>());
             Supports<StorageType.Timeouts>(s => s.EnableFeatureByDefault<InMemoryTimeoutPersistence>());
             Supports<StorageType.Sagas>(s => s.EnableFeatureByDefault<InMemorySagaPersistence>());
         }
     }
 
-    public class DynamicRoutingInMemoryPersistenceFeature : Feature
+    public class DatabaseRoutingInMemoryPersistenceFeature : Feature
     {
         protected override void Setup(FeatureConfigurationContext context)
         {
-            context.Container.ConfigureComponent<DynamicRoutingSubscriptionStorage>(DependencyLifecycle.SingleInstance);
+            context.Container.ConfigureComponent<DatabaseRoutingSubscriptionStorage>(DependencyLifecycle.SingleInstance);
         }
     }
 }

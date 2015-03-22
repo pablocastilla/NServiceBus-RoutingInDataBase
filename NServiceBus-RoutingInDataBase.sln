@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messages", "Messages\Messag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateUserHandler", "CreateUserHandler\CreateUserHandler.csproj", "{2C6DE5AC-F083-41A5-A498-4B2252AEEACC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicRouting", "DynamicRouting\DynamicRouting.csproj", "{C70F6253-D049-4EFD-8B77-1542C6EEC2FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseRouting", "DynamicRouting\DatabaseRouting.csproj", "{C70F6253-D049-4EFD-8B77-1542C6EEC2FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateUserHandler2", "CreateUserHandler2\CreateUserHandler2.csproj", "{9D978D38-27D4-4E5B-9BAF-7EA77DB3082D}"
 EndProject

@@ -7,7 +7,7 @@
     <ProjectGuid>{C70F6253-D049-4EFD-8B77-1542C6EEC2FD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DynamicRouting</RootNamespace>
+    <RootNamespace>DatabaseRouting</RootNamespace>
     <AssemblyName>DynamicRouting</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -49,9 +49,9 @@
     <Compile Include="DataAccess\CommandRoutingConfiguration.cs" />
     <Compile Include="DataAccess\EventSubscription.cs" />
     <Compile Include="DataAccess\EventSubscriptionRepository.cs" />
-    <Compile Include="DynamicRoutingBehaviour.cs" />
-    <Compile Include="DynamicRoutingConfiguration.cs" />
-    <Compile Include="DynamicRoutingSubscriptionStorage.cs" />
+    <Compile Include="DatabaseRoutingBehaviour.cs" />
+    <Compile Include="DatabaseRoutingConfiguration.cs" />
+    <Compile Include="DatabaseSubscriptionStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

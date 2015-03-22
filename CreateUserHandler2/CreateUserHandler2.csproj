@@ -56,9 +56,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DynamicRouting\DynamicRouting.csproj">
+    <ProjectReference Include="..\DynamicRouting\DatabaseRouting.csproj">
       <Project>{c70f6253-d049-4efd-8b77-1542c6eec2fd}</Project>
-      <Name>DynamicRouting</Name>
+      <Name>DatabaseRouting</Name>
     </ProjectReference>
     <ProjectReference Include="..\Messages\Messages.csproj">
       <Project>{817e41bd-d781-4284-820e-d20c2808d8be}</Project>
