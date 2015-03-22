@@ -1,9 +1,4 @@
 # NServiceBus-RoutingInDataBase
 
-The main part, where the tricks are done, is the DynamicRouting project, here we can find:
-
-- DynamicRoutingBehaviour: there I inject a new step in the NServiceBus pipeline.  In that step addresses for a message type are searched and a round robin is made with them just before the message is sent through the wire.
-
-- DynamicRoutingSubscriptionStorage: A new subscription storage is implemented. In that storage subscribers are searched in database without autosubscription. A round robin is done there if several SubscriberEndpoint with the same name are found. Also a new PersistenceDefinition and a new Feature are implemented.
-
-- DynamicRoutingConfiguration: NServiceBus checks if an endpoint exists in the configuration, for that every endpoint in the database is introduced in the configuration but anything is done with it after that.
+You can find a good explanation of the code here:
+https://pablocastilla.wordpress.com/2015/03/06/nservicebus-command-and-event-routing-in-database-with-scale-out/ 
