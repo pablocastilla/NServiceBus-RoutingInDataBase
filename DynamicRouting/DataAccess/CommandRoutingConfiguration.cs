@@ -18,11 +18,7 @@ namespace DatabaseRouting.DataAccess
         /// </summary>
         public string MessageType { get; set; }
 
-        /// <summary>
-        /// Name of the machine that sends
-        /// </summary>
-        public string SourceMachine { get; set; }
-
+      
         /// <summary>
         /// Name of the component that sends
         /// </summary>

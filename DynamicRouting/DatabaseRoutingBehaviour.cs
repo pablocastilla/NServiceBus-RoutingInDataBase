@@ -56,18 +56,16 @@ namespace DatabaseRouting
             }
             else          
                 //not send only
-                if (Bus.CurrentMessageContext != null 
-                    && Bus.CurrentMessageContext.Headers[Headers.OriginatingMachine]!=null
-                    && Bus.CurrentMessageContext.Headers[Headers.OriginatingEndpoint]!=null)
+                if (Bus != null && Bus is UnicastBus && ((UnicastBus)Bus).InputAddress != null)
                 {
                     //look if there is a concrete endpoint for that component
 
+                    var inputAddress = ((UnicastBus)Bus).InputAddress;
 
                     possibleEndpoints = routingConfigurationRepository.FindEndpointsBy(                                                          
                                                          context.OutgoingLogicalMessage.MessageType.ToString(),
-                                                         context.OutgoingLogicalMessage.MessageType.Assembly.GetName().Name,
-                                                         Bus.CurrentMessageContext.Headers[Headers.OriginatingMachine],
-                                                         Bus.CurrentMessageContext.Headers[Headers.OriginatingEndpoint]);
+                                                         context.OutgoingLogicalMessage.MessageType.Assembly.GetName().Name,                                                         
+                                                         inputAddress.Queue);
 
                     //if not look for default endpoints
                     if (possibleEndpoints == null || possibleEndpoints.Count == 0)

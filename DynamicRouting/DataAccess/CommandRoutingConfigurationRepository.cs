@@ -10,7 +10,7 @@ namespace DatabaseRouting.DataAccess
     {
         List<CommandRoutingConfiguration> GetRoutingInfo();
 
-        List<CommandRoutingConfiguration> FindEndpointsBy(string messageType, string messageAssembly, string sourceMachine = null, string sourceEndpoint = null);
+        List<CommandRoutingConfiguration> FindEndpointsBy(string messageType, string messageAssembly, string sourceEndpoint = null);
     }
 
     public class CommandRoutingConfigurationRepository : ICommandRoutingConfigurationRepository
@@ -33,7 +33,7 @@ namespace DatabaseRouting.DataAccess
             return routingInfoList;
         }
 
-        public List<CommandRoutingConfiguration> FindEndpointsBy(string messageType, string messageAssembly, string sourceMachine = null, string sourceEndpoint = null)
+        public List<CommandRoutingConfiguration> FindEndpointsBy(string messageType, string messageAssembly,string sourceEndpoint = null)
         {
 
             var possibleEndpoints = routingInfoList.Where(r =>
@@ -41,8 +41,7 @@ namespace DatabaseRouting.DataAccess
                                                     && r.MessageAssembly == messageAssembly
                                                 );
 
-            if (string.IsNullOrEmpty(sourceMachine))
-                possibleEndpoints = possibleEndpoints.Where(r => r.SourceMachine == sourceMachine);
+       
 
             if (string.IsNullOrEmpty(sourceEndpoint))
                 possibleEndpoints = possibleEndpoints.Where(r => r.SourceEndpoint == sourceEndpoint);
