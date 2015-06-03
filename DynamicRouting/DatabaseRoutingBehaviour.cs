@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using DatabaseRouting.DataAccess;
@@ -102,22 +103,27 @@ namespace DatabaseRouting
         }
 
 
-        //resolves source endpoint and returns null if not found.
+        //resolves source endpoint and returns null if not found. Get's the queue name or the 
         private string ResolveSourceEndpoint()
         {
-            string inputAddress=null;
+            string inputAddress = null;
 
-            if (Bus != null && Bus is UnicastBus && ((UnicastBus)Bus).InputAddress != null)
+            //wcf send only context
+            if (OperationContext.Current != null)
+            {
+                inputAddress = OperationContext.Current.Host.Description.ConfigurationName;
+            }
+            else if (Bus != null && Bus is UnicastBus && ((UnicastBus)Bus).InputAddress != null)
             {
                 //look if there is a concrete endpoint for that component
-
+                //THIS MUST BE CHANGED TO THE REAL WINDOWS SERVICE NAME
                 inputAddress = ((UnicastBus)Bus).InputAddress.Queue;
             }
 
+
             return inputAddress;
         }
-
-    
+  
 
       
     }
