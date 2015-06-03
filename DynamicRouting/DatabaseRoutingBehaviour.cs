@@ -47,35 +47,29 @@ namespace DatabaseRouting
 
             List<CommandRoutingConfiguration> possibleEndpoints=null;
 
-            //sendonly endpoint, we don´t filter by sources
-            if (Bus==null || Bus.CurrentMessageContext == null || (Bus.CurrentMessageContext != null && Bus.CurrentMessageContext.ReplyToAddress == null))
+
+            string sourceEndpoint = ResolveSourceEndpoint();
+
+
+            if (!string.IsNullOrEmpty(sourceEndpoint))
+            {
+                //look if there is a concrete endpoint for that component
+                possibleEndpoints = routingConfigurationRepository.FindEndpointsBy(
+                                                        context.OutgoingLogicalMessage.MessageType.ToString(),
+                                                        context.OutgoingLogicalMessage.MessageType.Assembly.GetName().Name,
+                                                        sourceEndpoint);
+            }
+
+
+            ///if we don't find any endpoint for that source we look for default endpoints
+            if (possibleEndpoints == null || possibleEndpoints.Count == 0)
             {
                 possibleEndpoints = routingConfigurationRepository.FindEndpointsBy(
-                                                       context.OutgoingLogicalMessage.MessageType.ToString(),
-                                                       context.OutgoingLogicalMessage.MessageType.Assembly.GetName().Name);
-            }
-            else          
-                //not send only
-                if (Bus != null && Bus is UnicastBus && ((UnicastBus)Bus).InputAddress != null)
-                {
-                    //look if there is a concrete endpoint for that component
-
-                    var inputAddress = ((UnicastBus)Bus).InputAddress;
-
-                    possibleEndpoints = routingConfigurationRepository.FindEndpointsBy(                                                          
-                                                         context.OutgoingLogicalMessage.MessageType.ToString(),
-                                                         context.OutgoingLogicalMessage.MessageType.Assembly.GetName().Name,                                                         
-                                                         inputAddress.Queue);
-
-                    //if not look for default endpoints
-                    if (possibleEndpoints == null || possibleEndpoints.Count == 0)
-                    {
-                        possibleEndpoints = routingConfigurationRepository.FindEndpointsBy(
-                                                         context.OutgoingLogicalMessage.MessageType.ToString(),
-                                                         context.OutgoingLogicalMessage.MessageType.Assembly.GetName().Name);
+                                                    context.OutgoingLogicalMessage.MessageType.ToString(),
+                                                    context.OutgoingLogicalMessage.MessageType.Assembly.GetName().Name);
                       
-                    }
-                }
+            }
+            
             
 
             CommandRoutingConfiguration finalEndpoint = null;
@@ -85,6 +79,7 @@ namespace DatabaseRouting
             {
                 throw new Exception("NO ENDPOINT FOUND FOR " + context.OutgoingLogicalMessage.MessageType.ToString());
             }
+
             //random with the endpoints
             if (possibleEndpoints.Count() > 1)
             {
@@ -104,6 +99,22 @@ namespace DatabaseRouting
 
                                                                              
             next();
+        }
+
+
+        //resolves source endpoint and returns null if not found.
+        private string ResolveSourceEndpoint()
+        {
+            string inputAddress=null;
+
+            if (Bus != null && Bus is UnicastBus && ((UnicastBus)Bus).InputAddress != null)
+            {
+                //look if there is a concrete endpoint for that component
+
+                inputAddress = ((UnicastBus)Bus).InputAddress.Queue;
+            }
+
+            return inputAddress;
         }
 
     
