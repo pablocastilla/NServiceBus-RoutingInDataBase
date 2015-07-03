@@ -43,6 +43,25 @@ namespace DatabaseRouting
 
             }
 
+            if (context.DeliveryOptions is SendOptions)
+            {
+                var so = context.DeliveryOptions as SendOptions;     
+          
+                string isSagaTimeOutMessage="";
+
+                if(context.OutgoingMessage.Headers.TryGetValue("NServiceBus.IsSagaTimeoutMessage", out isSagaTimeOutMessage))
+                {
+                    if(Convert.ToBoolean(isSagaTimeOutMessage))
+                    {
+                        next();
+
+                        return;
+                    }
+                }              
+
+              
+            }
+
 
             var routingInfo = routingConfigurationRepository.GetRoutingInfo();
 
