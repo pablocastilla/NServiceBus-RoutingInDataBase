@@ -20,13 +20,13 @@ namespace CreateUserHandler
 
         private void RunSamples()
         {
-            for (int i = 0; i < 1000; i++)
-            {
+           /* for (int i = 0; i < 1000; i++)
+            {*/
                 Bus.Send(new NewUser
                 {
                     Name = "Paco "+Guid.NewGuid().ToString()
                 });
-            }
+          //  }
         }
 
 
